@@ -76,7 +76,7 @@
                 // Convertir el canvas a imagen y agregarla al PDF
                 const qrDataUrl = qrCanvas.toDataURL('image/png');
                 const qrImage = await pdfDoc.embedPng(await (await fetch(qrDataUrl)).arrayBuffer());
-                page.drawImage(qrImage, { x: 2, y: 12, width: 100, height: 100 }); // Tamaño de la imagen QR reducido
+                page.drawImage(qrImage, { x: 2, y: 12, width: 20, height: 20 }); // Tamaño de la imagen QR reducido
 
                 // Serializar el PDF a bytes
                 const pdfBytes = await pdfDoc.save();
