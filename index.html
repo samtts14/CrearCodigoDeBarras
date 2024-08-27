@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Etiquetas PDF</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
     <script>
@@ -21,10 +21,12 @@
 
             // Crear un nuevo documento PDF
             const pdfDoc = await PDFDocument.create();
-            const page = pdfDoc.addPage([5 * 72, 5 * 72]);
+            const page = pdfDoc.addPage([3.3 * 72, 1.8 * 72]);
 
             // Cargar una fuente estándar
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+            
 
             try {
                 const logoBytes = await fetch('LOGO.jpeg').then(res => res.arrayBuffer());
@@ -33,6 +35,16 @@
             } catch (error) {
                 console.log('Error al cargar el logo:', error);
             }
+
+            // Logo en la parte superior izquierda
+            // try {
+            //     const logoUrl = 'LOGO.jpeg';  // Actualiza con la URL del archivo PNG
+            //     const logoBytes = await fetch(logoUrl).then(res => res.arrayBuffer());
+            //     const logoImage = await pdfDoc.embedPng(logoBytes);
+            //     page.drawImage(logoImage, { x: 2, y: 90, width: 90, height: 35 });
+            // } catch (error) {
+            //     console.log('Error al cargar el logo:', error);
+            // }
 
             // Precio en la parte superior derecha
             page.drawText(`$${parseFloat(precioProducto).toFixed(2)}`, {
@@ -61,31 +73,39 @@
                 color: rgb(0, 0, 0),
             });
 
-            // Generar código QR usando qrcode.js
-            const qrCanvas = document.createElement('canvas');
-            QRCode.toCanvas(qrCanvas, codigoProducto, {
-                width: 90, // Tamaño del canvas QR reducido
-                height: 90, // Tamaño del canvas QR reducido
-                color: {
-                    dark: '#000000',
-                    light: '#ffffff',
-                },
-            }, async (err) => {
-                if (err) throw err;
-                
-                // Convertir el canvas a imagen y agregarla al PDF
-                const qrDataUrl = qrCanvas.toDataURL('image/png');
-                const qrImage = await pdfDoc.embedPng(await (await fetch(qrDataUrl)).arrayBuffer());
-                page.drawImage(qrImage, { x: 2, y: 12, width: 90, height: 90 }); // Tamaño de la imagen QR reducido
-
-                // Serializar el PDF a bytes
-                const pdfBytes = await pdfDoc.save();
-
-                // Mostrar el PDF generado en una nueva pestaña
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                window.location.href = url;
+            // Generar código de barras usando JsBarcode y canvas
+            const barcodeCanvas = document.createElement('canvas');
+            JsBarcode(barcodeCanvas, codigoProducto, {
+                format: 'CODE128',
+                width: 2,
+                height: 100,
+                displayValue: false,
             });
+
+
+            //ElCodigo
+            page.drawText(codigoProducto, {
+                x: 80,
+                y: 2.5,
+                size: 14,
+                font,
+                color: rgb(0, 0, 0),
+            });
+
+
+            // Esperar a que el canvas esté completamente renderizado
+            const barcodeDataUrl = barcodeCanvas.toDataURL('image/png');
+            const barcodeImage = await pdfDoc.embedPng(await (await fetch(barcodeDataUrl)).arrayBuffer());
+            page.drawImage(barcodeImage, { x: 2, y: 12, width: 220, height: 50 });
+
+            // Serializar el PDF a bytes
+            const pdfBytes = await pdfDoc.save();
+
+            // Mostrar el PDF generado en una nueva pestaña
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            window.location.href = url;
+
         }
 
         // Llamar a la función para generar el PDF cuando la página se carga
