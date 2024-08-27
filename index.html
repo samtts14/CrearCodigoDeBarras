@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Etiquetas PDF</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
     <script>
@@ -26,8 +25,6 @@
             // Cargar una fuente estándar
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-            
-
             try {
                 const logoBytes = await fetch('LOGO.jpeg').then(res => res.arrayBuffer());
                 const logoImage = await pdfDoc.embedJpg(logoBytes);
@@ -35,16 +32,6 @@
             } catch (error) {
                 console.log('Error al cargar el logo:', error);
             }
-
-            // Logo en la parte superior izquierda
-            // try {
-            //     const logoUrl = 'LOGO.jpeg';  // Actualiza con la URL del archivo PNG
-            //     const logoBytes = await fetch(logoUrl).then(res => res.arrayBuffer());
-            //     const logoImage = await pdfDoc.embedPng(logoBytes);
-            //     page.drawImage(logoImage, { x: 2, y: 90, width: 90, height: 35 });
-            // } catch (error) {
-            //     console.log('Error al cargar el logo:', error);
-            // }
 
             // Precio en la parte superior derecha
             page.drawText(`$${parseFloat(precioProducto).toFixed(2)}`, {
@@ -73,30 +60,20 @@
                 color: rgb(0, 0, 0),
             });
 
-            // Generar código de barras usando JsBarcode y canvas
-            const barcodeCanvas = document.createElement('canvas');
-            JsBarcode(barcodeCanvas, codigoProducto, {
-                format: 'CODE128',
-                width: 2,
-                height: 100,
-                displayValue: false,
-            });
+            // Generar código QR usando la URL proporcionada
+            const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
+            const qrCodeDataUrl = await fetch(qrCodeUrl).then(res => res.arrayBuffer());
+            const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
+            page.drawImage(qrCodeImage, { x: 2, y: 10, width: 100, height: 100 });
 
-
-            //ElCodigo
+            // El código
             page.drawText(codigoProducto, {
-                x: 80,
-                y: 2.5,
+                x: 120,
+                y: 12,
                 size: 14,
                 font,
                 color: rgb(0, 0, 0),
             });
-
-
-            // Esperar a que el canvas esté completamente renderizado
-            const barcodeDataUrl = barcodeCanvas.toDataURL('image/png');
-            const barcodeImage = await pdfDoc.embedPng(await (await fetch(barcodeDataUrl)).arrayBuffer());
-            page.drawImage(barcodeImage, { x: 2, y: 12, width: 220, height: 50 });
 
             // Serializar el PDF a bytes
             const pdfBytes = await pdfDoc.save();
