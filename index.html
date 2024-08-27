@@ -15,7 +15,7 @@
             // Parámetros obtenidos de la URL
             const params = new URLSearchParams(window.location.search);
             const codigoProducto = params.get('codigo') || '00010001';
-           // const precioProducto = params.get('precio') || '900000.00';
+            const precioProducto = params.get('precio') || '900000.00';
             const nombreProducto = params.get('nombre') || 'Nombre del Producto';
             const descripcionProducto = params.get('descripcion') || 'Descripción del Producto';
 
