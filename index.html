@@ -52,13 +52,13 @@
             });
 
             // Descripción del producto
-            page.drawText(descripcionProducto, {
+           /* page.drawText(descripcionProducto, {
                 x: 2,
                 y: 3,
                 size: 12,
                 font,
                 color: rgb(0, 0, 0),
-            });
+            });*/
 
             // Generar código QR usando la URL proporcionada
             const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
@@ -67,13 +67,13 @@
             page.drawImage(qrCodeImage, { x: 75, y: 18, width: 75, height: 75 });
 
             // El código
-          /*  page.drawText(codigoProducto, {
+            page.drawText(codigoProducto, {
                 x: 2,
                 y: 3,
                 size: 12,
                 font,
                 color: rgb(0, 0, 0),
-            });*/
+            });
 
             // Serializar el PDF a bytes
             const pdfBytes = await pdfDoc.save();
