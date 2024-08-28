@@ -64,7 +64,7 @@
             const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
             const qrCodeDataUrl = await fetch(qrCodeUrl).then(res => res.arrayBuffer());
             const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
-            page.drawImage(qrCodeImage, { x: 2, y: 5, width: 75, height: 75 });
+            page.drawImage(qrCodeImage, { x: 75, y: 3, width: 75, height: 75 });
 
             // El código
             page.drawText(codigoProducto, {
