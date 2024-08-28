@@ -45,35 +45,35 @@
             // Nombre del producto
             page.drawText(nombreProducto, {
                 x: 2,
-                y: 80,
+                y: 6,
                 size: 12,
                 font,
                 color: rgb(0, 0, 0),
             });
 
             // Descripción del producto
-           /* page.drawText(descripcionProducto, {
+            page.drawText(descripcionProducto, {
                 x: 85,
-                y: 65,
-                size: 12,
-                font,
-                color: rgb(0, 0, 0),
-            });*/
-
-            // Generar código QR usando la URL proporcionada
-            const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
-            const qrCodeDataUrl = await fetch(qrCodeUrl).then(res => res.arrayBuffer());
-            const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
-            page.drawImage(qrCodeImage, { x: 75, y: 8, width: 75, height: 75 });
-
-            // El código
-            page.drawText(codigoProducto, {
-                x: 2,
                 y: 3,
                 size: 12,
                 font,
                 color: rgb(0, 0, 0),
             });
+
+            // Generar código QR usando la URL proporcionada
+            const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
+            const qrCodeDataUrl = await fetch(qrCodeUrl).then(res => res.arrayBuffer());
+            const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
+            page.drawImage(qrCodeImage, { x: 75, y: 11, width: 75, height: 75 });
+
+            // El código
+          /*  page.drawText(codigoProducto, {
+                x: 2,
+                y: 3,
+                size: 12,
+                font,
+                color: rgb(0, 0, 0),
+            });*/
 
             // Serializar el PDF a bytes
             const pdfBytes = await pdfDoc.save();
