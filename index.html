@@ -20,7 +20,7 @@
 
             // Crear un nuevo documento PDF
             const pdfDoc = await PDFDocument.create();
-            const page = pdfDoc.addPage([3.3 * 72, 3.3 * 72]);
+            const page = pdfDoc.addPage([3.3 * 72, 1.8 * 72]);
 
             // Cargar una fuente estándar
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
