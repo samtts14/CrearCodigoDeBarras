@@ -28,7 +28,7 @@
             try {
                 const logoBytes = await fetch('LOGO.jpeg').then(res => res.arrayBuffer());
                 const logoImage = await pdfDoc.embedJpg(logoBytes);
-                page.drawImage(logoImage, { x: 65, y: 110, width: 90, height: 35 });
+                page.drawImage(logoImage, { x: 65, y: 97, width: 90, height: 35 });
             } catch (error) {
                 console.log('Error al cargar el logo:', error);
             }
