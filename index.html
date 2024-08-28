@@ -28,7 +28,7 @@
             try {
                 const logoBytes = await fetch('LOGO.jpeg').then(res => res.arrayBuffer());
                 const logoImage = await pdfDoc.embedJpg(logoBytes);
-                page.drawImage(logoImage, { x: 65, y: 90, width: 90, height: 35 });
+                page.drawImage(logoImage, { x: 65, y: 110, width: 90, height: 35 });
             } catch (error) {
                 console.log('Error al cargar el logo:', error);
             }
@@ -64,7 +64,7 @@
             const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
             const qrCodeDataUrl = await fetch(qrCodeUrl).then(res => res.arrayBuffer());
             const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
-            page.drawImage(qrCodeImage, { x: 75, y: 18, width: 75, height: 75 });
+            page.drawImage(qrCodeImage, { x: 75, y: 23, width: 75, height: 75 });
 
             // El código
             page.drawText(codigoProducto, {
