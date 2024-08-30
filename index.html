@@ -34,13 +34,13 @@
             }
 
             // Precio en la parte superior derecha
-            page.drawText(`$${parseFloat(precioProducto).toFixed(2)}`, {
+           /* page.drawText(`$${parseFloat(precioProducto).toFixed(2)}`, {
                 x: 150,
                 y: 108,
                 size: 16,
                 font,
                 color: rgb(0, 0, 0),
-            });
+            });*/
 
             // Nombre del producto
             page.drawText(nombreProducto, {
@@ -52,13 +52,13 @@
             });
 
             // Descripción del producto
-           /* page.drawText(descripcionProducto, {
-                x: 2,
-                y: 3,
-                size: 12,
+            page.drawText(descripcionProducto, {
+                x: 150,
+                y: 108,
+                size: 16,
                 font,
                 color: rgb(0, 0, 0),
-            });*/
+            });
 
             // Generar código QR usando la URL proporcionada
             const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(codigoProducto)}&size=150`;
